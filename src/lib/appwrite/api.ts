@@ -56,9 +56,7 @@ export async function saveUserToDB(user: {
 export async function signInAccount(user: { email: string; password: string }) {
   try {
     // creating an email session.
-    console.log(account);
     const session = account.createEmailSession(user.email, user.password);
-    console.log(session);
     return session;
   } catch (error) {
     console.log(error);
@@ -69,30 +67,32 @@ export async function getCurrentUser() {
   try {
     const currentAccount = await account.get();
 
-    console.log(currentAccount);
-
     if (!currentAccount) {
       throw Error;
     }
     const id = currentAccount.$id;
 
-    const query = Query.equal("accountId", [id]);
-    console.log(query);
-    console.log(id);
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       [Query.equal("accountId", [id])]
     );
 
-    console.log(currentUser.documents);
-
     if (!currentUser) {
-      throw Error("no current uer");
+      throw Error;
     }
 
     return currentUser.documents[0];
   } catch (error) {
     console.error(error);
+  }
+}
+
+export async function signOutAccount() {
+  try {
+    const session = await account.deleteSession("current");
+    return session;
+  } catch (error) {
+    console.log(error);
   }
 }

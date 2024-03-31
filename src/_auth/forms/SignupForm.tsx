@@ -16,13 +16,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { SignupValidationSchema } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
-import { Link } from "react-router-dom";
-import { createUserAccount } from "@/lib/appwrite/api";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  useCreateUserAccount,
+  useSignInAccount,
+} from "@/lib/react-query/queriesAndMutations";
+import { useUserContext } from "@/context/AuthContext";
 
 const SignupForm = () => {
   const { toast } = useToast();
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
-  const isLoading = false;
+  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
+    useCreateUserAccount();
+
+  const { mutateAsync: signInAccount, isPending: isSigningIn } =
+    useSignInAccount();
+
+  const navigate = useNavigate();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidationSchema>>({
@@ -35,9 +46,6 @@ const SignupForm = () => {
     },
   });
 
-  // const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } =
-  //   useCreateUserAccountMutation();
-
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignupValidationSchema>) {
     const newUser = await createUserAccount(values);
@@ -46,7 +54,26 @@ const SignupForm = () => {
       return toast({
         title: "Sign up failed, Please try again.",
       });
-    // const session = await signInAccount();
+    const session = await signInAccount({
+      email: values.email,
+      password: values.password,
+    });
+
+    if (!session) {
+      return toast({
+        title: "Sign up failed, Please try again.",
+      });
+    }
+    const isLoggedIn = await checkAuthUser();
+
+    if (isLoggedIn) {
+      form.reset();
+      navigate("/");
+    } else {
+      return toast({
+        title: "Sign up failed, Please try again.",
+      });
+    }
   }
 
   return (
@@ -123,7 +150,7 @@ const SignupForm = () => {
             )}
           />
           <Button type="submit" className="shad-button_primary">
-            {isLoading ? <Loader /> : "Sign Up"}
+            {isCreatingAccount ? <Loader /> : "Sign Up"}
           </Button>
 
           <p className="mt-2 text-center text-small-regular text-light-2">

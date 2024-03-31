@@ -150,7 +150,7 @@ const SignupForm = () => {
             )}
           />
           <Button type="submit" className="shad-button_primary">
-            {isCreatingAccount ? <Loader /> : "Sign Up"}
+            {isCreatingAccount ? <Loader /> : "Sign up"}
           </Button>
 
           <p className="mt-2 text-center text-small-regular text-light-2">

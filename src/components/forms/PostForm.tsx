@@ -47,7 +47,6 @@ const PostForm = ({ post }: PostFormProps) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     const newPost = await createPost({ ...values, userId: user.id });
-    console.log(values);
 
     if (!newPost) {
       toast({ title: "please try again!!" });

@@ -19,12 +19,13 @@ const Topbar = () => {
     <section className="topbar">
       <ul className="px-5 py-4 flex-between">
         <Link to="/" className="flex items-center gap-3">
-          <img
+          {/* <img
             src="/assets/images/logo.svg"
             alt="logo"
             width={130}
             height={325}
-          />
+          /> */}
+          <h1 className="text-2xl font-bold">InstaFeed</h1>
         </Link>
 
         <div className="flex gap-4">

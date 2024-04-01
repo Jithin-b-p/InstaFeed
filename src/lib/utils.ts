@@ -49,3 +49,7 @@ export function getRelativeTime(dateTimeString: string): string {
   // Format the relative time string
   return `${timeValue} ${unit!.label}${timeValue > 1 ? "s" : ""} ago`;
 }
+
+export const checkIsLiked = (likeList: string[], userId: string) => {
+  return likeList.includes(userId);
+};

@@ -9,6 +9,7 @@ import {
   createPost,
   createUserAccount,
   deleteSavedPost,
+  getCurrentUser,
   getRecentPosts,
   likePost,
   savePost,
@@ -61,11 +62,11 @@ export const useLikePost = () => {
   return useMutation({
     mutationFn: ({
       postId,
-      likeArray,
+      likesArray,
     }: {
       postId: string;
-      likeArray: string[];
-    }) => likePost(postId, likeArray),
+      likesArray: string[];
+    }) => likePost(postId, likesArray),
 
     onSuccess: (data) => {
       queryClient.invalidateQueries({
@@ -121,5 +122,12 @@ export const useDeleteSavedPost = () => {
         queryKey: [QUERY_KEYS.GET_CURRENT_USER],
       });
     },
+  });
+};
+
+export const useGetCurrentUser = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+    queryFn: getCurrentUser,
   });
 };

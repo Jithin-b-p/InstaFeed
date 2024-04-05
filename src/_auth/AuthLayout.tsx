@@ -13,8 +13,8 @@ const AuthLayout = () => {
           </section>
 
           <img
-            className="hidden object-cover w-1/2 h-svh xl:block"
-            src="/assets/images/side-img.svg"
+            className="hidden object-cover w-1/2 my-auto h-svh xl:block"
+            src="/assets/images/online-world.svg"
           />
         </>
       )}

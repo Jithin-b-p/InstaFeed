@@ -79,8 +79,8 @@ const SignupForm = () => {
   return (
     <Form {...form}>
       <div className="sm:w-[26.25rem] flex-center flex-col">
-        <img src="/assets/images/logo.svg" alt="" />
-
+        {/* <img src="/assets/images/logo.svg" alt="" /> */}
+        <h1 className="text-4xl font-bold text-primary-600">InstaFeed</h1>
         <h2 className="pt-5 h3-bold md: h2-bold sm:pt-12">
           Create a new account
         </h2>

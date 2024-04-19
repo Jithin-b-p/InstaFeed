@@ -299,7 +299,7 @@
 
   /* right sidebar */
   .rightsidebar {
-    @apply hidden lg:flex px-6 py-10 justify-between lg:min-w-[300px] xl:min-w-[400px] bg-dark-2;
+    @apply hidden lg:flex px-7 py-12 flex-col gap-12 lg:min-w-[300px] xl:min-w-[400px] bg-dark-2 custom-scrollbar;
   }
 
   /* Post Card */

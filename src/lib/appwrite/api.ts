@@ -380,16 +380,19 @@ export async function searchPosts(searchTerm: string) {
   }
 }
 
-export async function getUsers() {
+export async function getUsers(limit?: number) {
   try {
     const users = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
-      [Query.orderDesc("$createdAt"), Query.limit(10)]
+      limit
+        ? [Query.orderDesc("$createdAt"), Query.limit(limit)]
+        : [Query.orderDesc("$createdAt")]
     );
 
     if (!users) return Error;
 
+    console.log(users);
     return users;
   } catch (error) {
     console.log(error);

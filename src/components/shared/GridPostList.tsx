@@ -32,11 +32,11 @@ const GridPostList = ({
               {showUser && (
                 <div className="flex items-center justify-start flex-1 gap-2">
                   <img
-                    src={post.creator.imageUrl}
+                    src={post?.creator?.imageUrl}
                     alt="creator"
                     className="w-8 h-8 rounded-full"
                   />
-                  <p className="line-clamp-1">{post.creator.name}</p>
+                  <p className="line-clamp-1">{post?.creator?.name}</p>
                 </div>
               )}
 

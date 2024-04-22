@@ -20,7 +20,7 @@ const LeftSidebar = () => {
   }, [isSuccess]);
 
   return (
-    <nav className="leftsidebar">
+    <nav className="leftsidebar border-r-[1px] border-dark-4">
       <div className="flex flex-col gap-11">
         <Link to="/" className="flex items-center gap-3">
           <img

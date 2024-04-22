@@ -70,6 +70,7 @@ export async function getCurrentUser() {
     if (!currentAccount) {
       throw Error;
     }
+
     const id = currentAccount.$id;
 
     const currentUser = await databases.listDocuments(
@@ -392,8 +393,26 @@ export async function getUsers(limit?: number) {
 
     if (!users) return Error;
 
-    console.log(users);
     return users;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getUserById(id: string | undefined) {
+  try {
+    if (!id) throw Error;
+
+    const user = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      id
+    );
+
+    if (!user) throw Error;
+
+    console.log(user);
+    return user;
   } catch (error) {
     console.log(error);
   }

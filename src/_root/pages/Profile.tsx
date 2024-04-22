@@ -1,5 +1,8 @@
 import Loader from "@/components/shared/Loader";
-import { useGetUserById } from "@/lib/react-query/queriesAndMutations";
+import {
+  useGetCurrentUser,
+  useGetUserById,
+} from "@/lib/react-query/queriesAndMutations";
 import { useParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GridPostList from "@/components/shared/GridPostList";
@@ -7,8 +10,9 @@ import GridPostList from "@/components/shared/GridPostList";
 const Profile = () => {
   const { id } = useParams();
   const { data: userDetails, isPending: detailsLoading } = useGetUserById(id);
-
-  if (detailsLoading)
+  const { data: currentUserDetails, isPending: currentUserLoading } =
+    useGetCurrentUser();
+  if (detailsLoading || currentUserLoading)
     return (
       <div>
         <Loader />
@@ -16,7 +20,7 @@ const Profile = () => {
     );
 
   return (
-    <div className="w-full px-10 overflow-y-scroll py-14">
+    <div className="w-full px-10 overflow-y-scroll custom-scrollbar py-14">
       {/* profile details */}
       <div className="flex gap-[1.875rem] mb-4">
         <img
@@ -54,7 +58,13 @@ const Profile = () => {
             </div>
           </div>
 
-          <p>{userDetails?.bio ? userDetails.bio : '"Nill"'}</p>
+          {userDetails?.bio ? (
+            <p>{userDetails.bio}</p>
+          ) : (
+            <p className="italic text-gray-700">
+              "I am a mysterious individual"
+            </p>
+          )}
         </div>
       </div>
 
@@ -69,13 +79,15 @@ const Profile = () => {
             <img src="/assets/icons/posts.svg" alt="posts" className="mr-2" />
             <span>Posts</span>
           </TabsTrigger>
-          <TabsTrigger
-            className="h-full px-14 rounded-none data-[state=active]:bg-dark-4 data-[state=active]:text-white text-white"
-            value="likes"
-          >
-            <img src="/assets/icons/liked.svg" alt="posts" className="mr-2" />
-            <span>Liked</span>
-          </TabsTrigger>
+          {currentUserDetails?.$id === userDetails?.$id && (
+            <TabsTrigger
+              className="h-full px-14 rounded-none data-[state=active]:bg-dark-4 data-[state=active]:text-white text-white"
+              value="likes"
+            >
+              <img src="/assets/icons/liked.svg" alt="posts" className="mr-2" />
+              <span>Liked</span>
+            </TabsTrigger>
+          )}
         </TabsList>
         <TabsContent value="posts" className="pt-10">
           {userDetails &&
@@ -85,7 +97,19 @@ const Profile = () => {
               "No posts"
             ))}
         </TabsContent>
-        <TabsContent value="likes">Change your password here.</TabsContent>
+        {currentUserDetails?.$id === userDetails?.$id && (
+          <TabsContent className="pt-10" value="likes">
+            {userDetails?.liked.length ? (
+              <GridPostList
+                posts={userDetails?.liked}
+                showUser={false}
+                showStats={false}
+              />
+            ) : (
+              "No liked posts yet"
+            )}
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   );

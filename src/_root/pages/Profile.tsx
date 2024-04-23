@@ -6,6 +6,7 @@ import {
 import { useParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GridPostList from "@/components/shared/GridPostList";
+import { Button } from "@/components/ui/button";
 
 const Profile = () => {
   const { id } = useParams();
@@ -14,7 +15,7 @@ const Profile = () => {
     useGetCurrentUser();
   if (detailsLoading || currentUserLoading)
     return (
-      <div>
+      <div className="flex items-center justify-center w-full h-full">
         <Loader />
       </div>
     );
@@ -31,14 +32,26 @@ const Profile = () => {
           className="self-start rounded-full"
         />
         <div className="flex flex-col gap-6 py-5">
-          <div>
+          <div className="flex gap-10">
             <div>
               <h1 className="text-4xl font-bold">{userDetails?.name}</h1>
+              <span className="block mt-4 font-medium text-light-4">
+                @{userDetails?.username}
+              </span>
             </div>
 
-            <span className="font-medium text-light-4">
-              @{userDetails?.username}
-            </span>
+            {userDetails?.$id === currentUserDetails?.$id && (
+              <Button>
+                <img
+                  src="/assets/icons/edit.svg"
+                  width={20}
+                  height={20}
+                  alt=""
+                  className="mr-2 invert fill-yellow-600"
+                />
+                Edit profile
+              </Button>
+            )}
           </div>
 
           <div className="flex gap-6">

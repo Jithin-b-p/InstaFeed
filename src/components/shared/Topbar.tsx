@@ -25,7 +25,7 @@ const Topbar = () => {
             width={130}
             height={325}
           /> */}
-          <h1 className="text-2xl font-bold">InstaFeed</h1>
+          <h1 className="text-2xl font-bold text-primary-500">InstaFeed</h1>
         </Link>
 
         <div className="flex gap-4">
@@ -41,7 +41,7 @@ const Topbar = () => {
             <img
               src={user.imageUrl || "/assers/images/profile-placeholder.svg"}
               alt="profile"
-              className="w-8 h-8 rounded-full"
+              className="object-cover object-center w-8 h-8 rounded-full"
             />
           </Link>
         </div>

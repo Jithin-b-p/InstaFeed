@@ -41,7 +41,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     checkAuthUser();
   }, []);
 
-  const checkAuthUser = async () => {
+  async function checkAuthUser() {
     try {
       const currentAccount = await getCurrentUser();
 
@@ -67,7 +67,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   const value = {
     user,

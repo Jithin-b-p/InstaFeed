@@ -1,4 +1,4 @@
-import { INewPost, INewUser, IUpdatePost } from "@/types";
+import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types";
 import { account, avatars, databases, storage } from "./config";
 import { ID, Query } from "appwrite";
 import { appwriteConfig } from "./config";
@@ -83,7 +83,6 @@ export async function getCurrentUser() {
       throw Error;
     }
 
-    console.log(currentUser.documents[0]);
     return currentUser.documents[0];
   } catch (error) {
     console.error(error);
@@ -412,9 +411,70 @@ export async function getUserById(id: string | undefined) {
 
     if (!user) throw Error;
 
-    console.log(user);
     return user;
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function updateUser(profileDetails: IUpdateUser) {
+  try {
+    console.log(profileDetails);
+    const hasFileToUpdate = profileDetails.file.length > 0;
+    // let uploadedFile;
+    if (hasFileToUpdate) {
+      // upload image to storage
+      const uploadedFile = await uploadFile(profileDetails.file[0]);
+
+      if (!uploadedFile) {
+        throw Error;
+      }
+
+      // get file url
+      const fileUrl = getFilePreview(uploadedFile.$id);
+
+      if (!fileUrl) {
+        deleteFile(uploadedFile.$id);
+        throw Error;
+      }
+
+      const updatedPost = await databases.updateDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.userCollectionId,
+        profileDetails.userId,
+        {
+          name: profileDetails.name,
+          bio: profileDetails.bio,
+          imageId: uploadedFile.$id,
+          imageUrl: fileUrl,
+        }
+      );
+
+      console.log(updatePost);
+      if (!updatedPost) {
+        await deleteFile(uploadedFile.$id);
+        throw Error;
+      }
+
+      console.log("updated:", updatePost);
+      return updatedPost;
+    }
+
+    const updatedPost = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      profileDetails.userId,
+      {
+        name: profileDetails.name,
+        bio: profileDetails.bio,
+      }
+    );
+
+    if (!updatePost) throw Error;
+
+    console.log("updated:", updatePost);
+    return updatedPost;
+  } catch (Error) {
+    console.error(Error);
   }
 }

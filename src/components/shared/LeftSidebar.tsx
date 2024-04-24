@@ -23,19 +23,20 @@ const LeftSidebar = () => {
     <nav className="leftsidebar border-r-[1px] border-dark-4">
       <div className="flex flex-col gap-11">
         <Link to="/" className="flex items-center gap-3">
-          <img
+          {/* <img
             src="/assets/images/logo.svg"
             alt="logo"
             width={170}
             height={36}
-          />
+          /> */}
+          <h1 className="text-2xl font-bold text-primary-500">InstaFeed</h1>
         </Link>
 
         <Link to={`/profile/${user.id}`} className="flex items-center gap-3">
           <img
             src={user.imageUrl || "/assets/icons/profileholder.svg"}
             alt="profile"
-            className="rounded-full h-14 w-14"
+            className="object-cover object-center rounded-full h-14 w-14"
           />
 
           <div className="flex flex-col">

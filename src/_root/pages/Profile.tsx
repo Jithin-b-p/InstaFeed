@@ -13,6 +13,7 @@ const Profile = () => {
   const { data: userDetails, isPending: detailsLoading } = useGetUserById(id);
   const { data: currentUserDetails, isPending: currentUserLoading } =
     useGetCurrentUser();
+
   if (detailsLoading || currentUserLoading)
     return (
       <div className="flex items-center justify-center w-full h-full">
@@ -23,13 +24,13 @@ const Profile = () => {
   return (
     <div className="w-full px-10 overflow-y-scroll custom-scrollbar py-14">
       {/* profile details */}
-      <div className="flex gap-[1.875rem] mb-4">
+      <div className="flex items-start gap-[1.875rem] mb-4">
         <img
           src={userDetails?.imageUrl}
           alt="profile picture"
           height="150"
           width="150"
-          className="self-start rounded-full"
+          className="self-start object-cover object-center rounded-full w-150 aspect-square"
         />
         <div className="flex flex-col gap-6 py-5">
           <div className="flex gap-10">

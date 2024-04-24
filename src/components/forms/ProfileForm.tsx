@@ -15,10 +15,17 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { ProfileValidationSchema } from "@/lib/validation";
 import ProfileImageUploader from "../shared/ProfileImageUploader";
+import { useUpdateUser } from "@/lib/react-query/queriesAndMutations";
+import { toast } from "../ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import Loader from "../shared/Loader";
 
 const ProfileForm = () => {
-  const { user } = useUserContext();
-  ("use client");
+  const { user, setUser } = useUserContext();
+  const navigate = useNavigate();
+
+  const { mutateAsync: updateProfile, isPending: isUpdateLoading } =
+    useUpdateUser();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof ProfileValidationSchema>>({
@@ -33,9 +40,30 @@ const ProfileForm = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof ProfileValidationSchema>) {
+  async function onSubmit(values: z.infer<typeof ProfileValidationSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    const updatedProfile = await updateProfile({
+      userId: user.id,
+      name: values.name,
+      bio: values.bio,
+      imageId: "",
+      imageUrl: user.imageUrl,
+      file: values.file,
+    });
+
+    if (!updatedProfile) return toast({ title: "please try again!!" });
+
+    console.log(updatedProfile);
+    setUser({
+      ...user,
+      imageUrl: updatedProfile.imageUrl,
+      bio: updatedProfile.bio,
+      name: updatedProfile.name,
+    });
+
+    return navigate(`/profile/${user.id}`);
+
     console.log(values);
   }
 
@@ -43,7 +71,7 @@ const ProfileForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col w-full max-w-5xl gap-9"
+        className="flex flex-col w-full max-w-xl gap-9"
       >
         <FormField
           control={form.control}
@@ -84,6 +112,7 @@ const ProfileForm = () => {
               <FormLabel>Username</FormLabel>
               <FormControl>
                 <Input
+                  disabled
                   className="shad-input"
                   placeholder="username"
                   {...field}
@@ -131,7 +160,7 @@ const ProfileForm = () => {
           )}
         />
         <Button className="self-end w-48 bg-primary-600" type="submit">
-          Update profile
+          {isUpdateLoading ? <Loader /> : "Update profile"}
         </Button>
       </form>
     </Form>

@@ -3,7 +3,7 @@ import {
   useGetCurrentUser,
   useGetUserById,
 } from "@/lib/react-query/queriesAndMutations";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GridPostList from "@/components/shared/GridPostList";
 import { Button } from "@/components/ui/button";
@@ -41,16 +41,18 @@ const Profile = () => {
             </div>
 
             {userDetails?.$id === currentUserDetails?.$id && (
-              <Button>
-                <img
-                  src="/assets/icons/edit.svg"
-                  width={20}
-                  height={20}
-                  alt=""
-                  className="mr-2 invert fill-yellow-600"
-                />
-                Edit profile
-              </Button>
+              <Link to={`/update-profile/${id}`}>
+                <Button>
+                  <img
+                    src="/assets/icons/edit.svg"
+                    width={20}
+                    height={20}
+                    alt=""
+                    className="mr-2 invert fill-yellow-600"
+                  />
+                  Edit profile
+                </Button>
+              </Link>
             )}
           </div>
 

@@ -2,12 +2,14 @@ import { useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button } from "../ui/button";
 
-type FileUploaderProps = {
+type ProfileImageUploaderProps = {
   fieldChange: (FILES: File[]) => void;
   mediaUrl: string;
 };
-
-const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
+const ProfileImageUploader = ({
+  fieldChange,
+  mediaUrl,
+}: ProfileImageUploaderProps) => {
   const [file, setFile] = useState<File[]>([]);
   const [fileUrl, setFileUrl] = useState(mediaUrl);
 
@@ -26,38 +28,40 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
       "image/*": [".png", ".jpeg", ".jpg", ".svg"],
     },
   });
-
   return (
-    <div
-      {...getRootProps()}
-      className="flex flex-col cursor-pointer flex-center bg-dark-3 rounded-xl"
-    >
+    <div {...getRootProps()} className="w-fit">
       <input {...getInputProps()} className="cursor-pointer" />
       {fileUrl ? (
         <>
-          <div className="flex justify-center flex-1 w-full p-5 lg-p-10">
-            <img className="object-cover" src={fileUrl} alt="" />
+          <div className="flex items-center gap-5">
+            <img
+              width={80}
+              height={80}
+              className="object-cover object-center w-20 h-20 rounded-full"
+              src={fileUrl}
+              alt=""
+            />
+            <p className="font-semibold text-blue-500 cursor-pointer">
+              Change profile photo
+            </p>
           </div>
-          <p className="file_uploader-label">Click or drag photo to replace</p>
         </>
       ) : (
         <div className="file_uploader-box">
           <img
-            src="/assets/icons/file-upload.svg"
-            width={96}
-            height={77}
+            src="/assets/icons/profile-placeholder.svg"
+            width={80}
+            height={80}
+            className="w-20 h-20 rounded-full"
             alt=""
           />
-          <h3 className="mt-6 mb-2 base-medium text-light-2">
-            Drag photo here
-          </h3>
-          <p className="mb-6 text-light-4 small-regular">SVG, PNG, JPG</p>
-
-          <Button className="shad-button_dark_4">Select from computer</Button>
+          <p className="font-semibold text-blue-500 cursor-pointer">
+            Change profile photo
+          </p>
         </div>
       )}
     </div>
   );
 };
 
-export default FileUploader;
+export default ProfileImageUploader;

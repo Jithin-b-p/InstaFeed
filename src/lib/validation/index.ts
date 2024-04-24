@@ -22,3 +22,17 @@ export const PostValidationSchema = z.object({
   location: z.string().min(2).max(100),
   tags: z.string(),
 });
+
+export const ProfileValidationSchema = z.object({
+  file: z.custom<File[]>(),
+  name: z.string().min(2, {
+    message: "name must be at least 2 characters.",
+  }),
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  email: z.string().email(),
+  bio: z.string().min(2, {
+    message: "bio must be at least 2 characters.",
+  }),
+});

@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 
 import {
   Form,
@@ -19,12 +18,13 @@ import Loader from "@/components/shared/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignInAccount } from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
+import { toast } from "@/components/ui/use-toast";
 
 const SigninForm = () => {
-  const { toast } = useToast();
-  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+  const { checkAuthUser } = useUserContext();
 
-  const { mutateAsync: signInAccount } = useSignInAccount();
+  const { mutateAsync: signInAccount, isPending: isUserLoading } =
+    useSignInAccount();
 
   const navigate = useNavigate();
 
@@ -46,7 +46,7 @@ const SigninForm = () => {
 
     if (!session) {
       return toast({
-        title: "Sign in failed, Please try again.",
+        title: "Invalid Credentials, Please try again.",
       });
     }
     const isLoggedIn = await checkAuthUser();
@@ -106,7 +106,11 @@ const SigninForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="shad-button_primary">
+          <Button
+            type="submit"
+            className="shad-button_primary"
+            disabled={isUserLoading}
+          >
             {isUserLoading ? <Loader /> : "Sign in"}
           </Button>
 

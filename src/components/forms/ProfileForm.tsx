@@ -63,8 +63,6 @@ const ProfileForm = () => {
     });
 
     return navigate(`/profile/${user.id}`);
-
-    console.log(values);
   }
 
   return (

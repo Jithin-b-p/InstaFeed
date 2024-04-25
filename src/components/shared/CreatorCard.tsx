@@ -12,7 +12,9 @@ const CreatorCard = ({ name, imageUrl, username }: creatorCardProps) => {
       <img
         src={imageUrl || "/assets/icons/profileholder.svg"}
         alt="profile picture"
-        className="rounded-full h-14 w-14"
+        width={56}
+        height={56}
+        className="object-cover object-center rounded-full h-14 w-14"
       />
 
       <h3 className="text-base font-medium">{name}</h3>

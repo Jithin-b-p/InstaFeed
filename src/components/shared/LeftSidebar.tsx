@@ -6,9 +6,10 @@ import { useEffect } from "react";
 import { sidebarLinks } from "@/constants";
 import { INavLink } from "@/types";
 import { Button } from "../ui/button";
+import Loader from "./Loader";
 
 const LeftSidebar = () => {
-  const { mutate: signOut, isSuccess } = useSignOutAccount();
+  const { mutate: signOut, isPending, isSuccess } = useSignOutAccount();
   const { user } = useUserContext();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -80,8 +81,14 @@ const LeftSidebar = () => {
         className="shad-button_ghost"
         onClick={() => signOut()}
       >
-        <img src="/assets/icons/logout.svg" alt="logout" />
-        <p className="small-medium lg:base-medium">Logout</p>
+        {isPending ? (
+          <Loader />
+        ) : (
+          <>
+            <img src="/assets/icons/logout.svg" alt="logout" />
+            <p className="small-medium lg:base-medium">Logout</p>
+          </>
+        )}
       </Button>
     </nav>
   );

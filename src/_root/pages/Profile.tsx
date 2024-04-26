@@ -27,7 +27,7 @@ const Profile = () => {
       <div className="flex flex-col items-center md:flex-row md:items-start md:gap-[1.875rem] mb-4">
         <img
           src={userDetails?.imageUrl}
-          alt="profile picture"
+          alt=""
           height="150"
           width="150"
           className="object-cover object-center rounded-full md:self-start w-150 aspect-square"

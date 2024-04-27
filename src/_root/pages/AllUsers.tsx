@@ -5,11 +5,7 @@ import { useGetUsers } from "@/lib/react-query/queriesAndMutations";
 import { Key } from "react";
 
 const AllUsers = () => {
-  const {
-    data: creators,
-    isLoading: isUserLoading,
-    isError: isErrorCreators,
-  } = useGetUsers();
+  const { data: creators, isLoading: isUserLoading } = useGetUsers();
 
   return (
     <div className="flex-auto px-8 py-14">

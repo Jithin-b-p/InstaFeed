@@ -1,14 +1,9 @@
 import { useGetUsers } from "@/lib/react-query/queriesAndMutations";
 import Loader from "./Loader";
 import CreatorCard from "./CreatorCard";
-import { Key } from "react";
 
 const RightSidebar = () => {
-  const {
-    data: creators,
-    isLoading: isUserLoading,
-    isError: isErrorCreators,
-  } = useGetUsers(2);
+  const { data: creators, isLoading: isUserLoading } = useGetUsers(2);
 
   return (
     <div className="overflow-y-scroll rightsidebar border-l-[1px] border-dark-4">
@@ -17,21 +12,14 @@ const RightSidebar = () => {
         {isUserLoading ? (
           <Loader />
         ) : (
-          creators?.documents.map(
-            (creator: {
-              $id: Key | null | undefined;
-              name: string;
-              imageUrl: string;
-              username: string;
-            }) => (
-              <CreatorCard
-                key={creator.$id}
-                name={creator.name}
-                imageUrl={creator.imageUrl}
-                username={creator.username}
-              />
-            )
-          )
+          creators?.documents.map((creator) => (
+            <CreatorCard
+              key={creator.$id}
+              name={creator.name}
+              imageUrl={creator.imageUrl}
+              username={creator.username}
+            />
+          ))
         )}
       </ul>
     </div>

@@ -4,11 +4,7 @@ import { useGetCurrentUser } from "@/lib/react-query/queriesAndMutations";
 import { useEffect, useState } from "react";
 
 const Saved = () => {
-  const {
-    data: userData,
-    isPending: dataLoading,
-    isError,
-  } = useGetCurrentUser();
+  const { data: userData, isPending: dataLoading } = useGetCurrentUser();
 
   const [posts, setPosts] = useState([]);
 
@@ -17,7 +13,9 @@ const Saved = () => {
       return;
     }
 
-    setPosts(userData.save.map((savedPost, index) => savedPost.post));
+    setPosts(
+      userData.save.map((savedPost: { post: unknown }) => savedPost.post)
+    );
   }, [userData]);
 
   return (

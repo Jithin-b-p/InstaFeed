@@ -2,8 +2,6 @@ import CreatorCard from "@/components/shared/CreatorCard";
 import Loader from "@/components/shared/Loader";
 import { useGetUsers } from "@/lib/react-query/queriesAndMutations";
 
-import { Key } from "react";
-
 const AllUsers = () => {
   const { data: creators, isLoading: isUserLoading } = useGetUsers();
 
@@ -22,21 +20,14 @@ const AllUsers = () => {
         {isUserLoading ? (
           <Loader />
         ) : (
-          creators?.documents.map(
-            (creator: {
-              $id: Key | null | undefined;
-              name: string;
-              imageUrl: string;
-              username: string;
-            }) => (
-              <CreatorCard
-                key={creator.$id}
-                name={creator.name}
-                imageUrl={creator.imageUrl}
-                username={creator.username}
-              />
-            )
-          )
+          creators?.documents?.map((creator) => (
+            <CreatorCard
+              key={creator.$id}
+              name={creator.name}
+              imageUrl={creator.imageUrl}
+              username={creator.username}
+            />
+          ))
         )}
       </ul>
     </div>
